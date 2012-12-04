@@ -454,6 +454,7 @@ private:
     enum CustomScript {
         Bengali,
         Devanagari,
+        Kannada,
         Hebrew,
         HebrewBold,
         Naskh,
@@ -512,6 +513,7 @@ private:
 const char* TextRunWalker::paths[] = {
     "/system/fonts/Lohit-Bengali.ttf",
     "/system/fonts/Lohit-Devanagari.ttf",
+    "/system/fonts/Lohit-Kannada.ttf",
     "/system/fonts/DroidSansHebrew-Regular.ttf",
     "/system/fonts/DroidSansHebrew-Bold.ttf",
     "/system/fonts/DroidNaskh-Regular.ttf",
@@ -705,11 +707,14 @@ void TextRunWalker::setupFontForScriptRun()
       case HB_Script_Bengali:
           complexPlatformData = setupComplexFont(Bengali, platformData);
           break;
-        case HB_Script_Devanagari:
-            complexPlatformData = setupComplexFont(Devanagari, platformData);
-            break;
-        case HB_Script_Hebrew:
-            switch (platformData.typeface()->style()) {
+      case HB_Script_Devanagari:
+          complexPlatformData = setupComplexFont(Devanagari, platformData);
+          break;
+      case HB_Script_Kannada:
+          complexPlatformData = setupComplexFont(Kannada, platformData);
+          break;
+      case HB_Script_Hebrew:
+          switch (platformData.typeface()->style()) {
                 case SkTypeface::kBold:
                 case SkTypeface::kBoldItalic:
                     complexPlatformData = setupComplexFont(HebrewBold, platformData);
@@ -721,19 +726,19 @@ void TextRunWalker::setupFontForScriptRun()
                     break;
             }
             break;
-        case HB_Script_Arabic:
-            complexPlatformData = setupComplexFont(Naskh, platformData);
-            break;
-        case HB_Script_Tamil:
-            complexPlatformData = setupComplexFont(Tamil, platformData);
-            break;
-        case HB_Script_Thai:
-            complexPlatformData = setupComplexFont(Thai, platformData);
-            break;
-        default:
-            // HB_Script_Common; includes Ethiopic
-            complexPlatformData = &platformData;
-            break;
+      case HB_Script_Arabic:
+          complexPlatformData = setupComplexFont(Naskh, platformData);
+          break;
+      case HB_Script_Tamil:
+          complexPlatformData = setupComplexFont(Tamil, platformData);
+          break;
+      case HB_Script_Thai:
+          complexPlatformData = setupComplexFont(Thai, platformData);
+          break;
+      default:
+          // HB_Script_Common; includes Ethiopic
+          complexPlatformData = &platformData;
+          break;
     }
     m_item.face = complexPlatformData->harfbuzzFace();
     m_item.font->userData = const_cast<FontPlatformData*>(complexPlatformData);
